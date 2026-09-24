@@ -1247,7 +1247,7 @@ func requestHistorySync(client *whatsmeow.Client) {
 	if err != nil {
 		fmt.Printf("Failed to request history sync: %v\n", err)
 	} else {
-		fmt.Println("History sync requested. Waiting for server response...\n")
+		fmt.Println("History sync requested. Waiting for server response...")
 	}
 }
 
