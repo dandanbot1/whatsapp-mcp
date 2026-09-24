@@ -508,7 +508,7 @@ type DownloadMediaResponse struct {
 // Store additional media info in the database
 func (store *MessageStore) StoreMediaInfo(id, chatJID, url, directPath string, mediaKey, fileSHA256, fileEncSHA256 []byte, fileLength uint64) error {
 	_, err := store.db.Exec(
-		"UPDATE messages SET url = ?, direct_path = ?, media_key = ?, file_sha256 = ?, file_enc_sha256 = ?, file_length = ? WHERE id = ? AND chat_jID = ?",
+		"UPDATE messages SET url = ?, direct_path = ?, media_key = ?, file_sha256 = ?, file_enc_sha256 = ?, file_length = ? WHERE id = ? AND chat_jid = ?",
 		url, directPath, mediaKey, fileSHA256, fileEncSHA256, fileLength, id, chatJID,
 	)
 	return err
@@ -522,7 +522,7 @@ func (store *MessageStore) GetMediaInfo(id, chatJID string) (string, string, str
 	var fileLength uint64
 
 	err := store.db.QueryRow(
-		"SELECT media_type, filename, url, media_key, file_sha256, file_enc_sha256, file_length, direct_path FROM messages WHERE id = ? AND chat_jID = ?",
+		"SELECT media_type, filename, url, media_key, file_sha256, file_enc_sha256, file_length, direct_path FROM messages WHERE id = ? AND chat_jid = ?",
 		id, chatJID,
 	).Scan(&mediaType, &filename, &url, &mediaKey, &fileSHA256, &fileEncSHA256, &fileLength, &directPath)
 
@@ -614,7 +614,7 @@ func downloadMedia(client *whatsmeow.Client, messageStore *MessageStore, message
 	if err != nil {
 		// Try to get basic info if extended info isn't available
 		err = messageStore.db.QueryRow(
-			"SELECT media_type, filename FROM messages WHERE id = ? AND chat_jID = ?",
+			"SELECT media_type, filename FROM messages WHERE id = ? AND chat_jid = ?",
 			messageID, chatJID,
 		).Scan(&mediaType, &filename)
 
@@ -707,7 +707,7 @@ func downloadMedia(client *whatsmeow.Client, messageStore *MessageStore, message
 
 	if storedDirectPath == "" && directPath != "" {
 		_, _ = messageStore.db.Exec(
-			"UPDATE messages SET direct_path = ? WHERE id = ? AND chat_jID = ?",
+			"UPDATE messages SET direct_path = ? WHERE id = ? AND chat_jid = ?",
 			directPath, messageID, chatJID,
 		)
 	}
@@ -1247,7 +1247,7 @@ func requestHistorySync(client *whatsmeow.Client) {
 	if err != nil {
 		fmt.Printf("Failed to request history sync: %v\n", err)
 	} else {
-		fmt.Println("History sync requested. Waiting for server response...")
+		fmt.Println("History sync requested. Waiting for server response...\n")
 	}
 }
 
