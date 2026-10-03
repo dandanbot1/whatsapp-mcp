@@ -1,0 +1,2 @@
+# runtime state written by the supervisor (lock, pid and status files)
+run/
